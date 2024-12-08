@@ -1,36 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
-namespace Alexender.Runer
+namespace Alexander.RunnerCandy
 {
-    public class SwipeController : MonoBehaviour
+    public class SwipeController : IUpdatable
     {
-        public static bool tap, swipeLeft, swipeRight, swipeUp, swipeDown;
-        private bool isDraging = false;
         private Vector2 startTouch, swipeDelta;
+        private bool isDragging;
 
-        private void Update()
+        public bool Tap { get; private set; }
+        public bool SwipeLeft { get; private set; }
+        public bool SwipeRight { get; private set; }
+        public bool SwipeUp { get; private set; }
+        public bool SwipeDown { get; private set; }
+
+        public int Priority => UpdatePriorityList.INPUT;
+
+        public void DoUpdate()
         {
-            tap = swipeDown = swipeUp = swipeLeft = swipeRight = false;
+            Tap = SwipeLeft = SwipeRight = SwipeUp = SwipeDown = false;
 
             if (Input.GetMouseButtonDown(0) || (Input.touches.Length > 0 && Input.touches[0].phase == TouchPhase.Began))
             {
-                tap = true;
-                isDraging = true;
+                Tap = true;
+                isDragging = true;
                 startTouch = Input.mousePosition;
+
                 if (Input.touches.Length > 0)
                     startTouch = Input.touches[0].position;
             }
 
-            if (Input.GetMouseButtonUp(0) || (Input.touches.Length > 0 && (Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase == TouchPhase.Canceled)))
+            if (Input.GetMouseButtonUp(0) || (Input.touches.Length > 0 &&
+                (Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase == TouchPhase.Canceled)))
             {
-                isDraging = false;
+                isDragging = false;
                 Reset();
             }
 
             swipeDelta = Vector2.zero;
-            if (isDraging)
+            if (isDragging)
             {
                 if (Input.touches.Length > 0)
                     swipeDelta = Input.touches[0].position - startTouch;
@@ -50,13 +58,13 @@ namespace Alexender.Runer
 
                 if (Mathf.Abs(x) > Mathf.Abs(y))
                 {
-                    swipeLeft = x < 0;
-                    swipeRight = x > 0;
+                    SwipeLeft = x < 0;
+                    SwipeRight = x > 0;
                 }
                 else
                 {
-                    swipeDown = y < 0;
-                    swipeUp = y > 0;
+                    SwipeDown = y < 0;
+                    SwipeUp = y > 0;
                 }
 
                 Reset();
@@ -66,7 +74,7 @@ namespace Alexender.Runer
         private void Reset()
         {
             startTouch = swipeDelta = Vector2.zero;
-            isDraging = false;
+            isDragging = false;
         }
     }
 }

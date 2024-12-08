@@ -21,8 +21,8 @@ namespace Alexander.RunnerCandy
 
             builder.RegisterEntryPoint<LoopController>(Lifetime.Singleton);
 
-            builder.Register<Test>(Lifetime.Singleton).
-                AsImplementedInterfaces();
+            //builder.Register<SwipeController>(Lifetime.Singleton)
+                //AsImplementedInterfaces();
         }
     }
 }

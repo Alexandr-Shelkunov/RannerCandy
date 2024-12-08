@@ -122,37 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &144550316
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 144550317}
-  m_Layer: 0
-  m_Name: Test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &144550317
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144550316}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.17087173, y: -2.723003, z: 4.9418283}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &334159900
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +454,8 @@ MonoBehaviour:
   autoInjectGameObjects: []
   platformsPrefabs:
   - {fileID: 8386924012122958701, guid: c8a1efd9c4caaad47a0dbd89ac5cb5b6, type: 3}
-  player: {fileID: 144550317}
+  - {fileID: 7071343185538676934, guid: 76451f9013689f544aff07d11d845eac, type: 3}
+  player: {fileID: 0}
   spawnRoot: {fileID: 885212823}
 --- !u!1 &2137284162
 GameObject:
@@ -526,4 +496,3 @@ SceneRoots:
   - {fileID: 1119468311}
   - {fileID: 334159901}
   - {fileID: 535418681}
-  - {fileID: 144550317}

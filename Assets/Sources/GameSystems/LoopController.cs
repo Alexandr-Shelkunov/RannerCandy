@@ -25,7 +25,7 @@ namespace Alexander.RunnerCandy
             });
         }
 
-        // Вызов обновления для зарегистрированных объектов
+       
         public void Tick()
         {
             foreach (var updatable in sorted)
