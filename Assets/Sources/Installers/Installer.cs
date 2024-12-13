@@ -8,21 +8,30 @@ namespace Alexander.RunnerCandy
     public class Installer : LifetimeScope
     {
         [SerializeField] private GameObject[] platformsPrefabs;
-        [SerializeField] private Transform player;
-        [SerializeField] private Transform spawnRoot;
+        [SerializeField] private Transform playerT;
+        [SerializeField] private Transform spawnRootT;
 
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<LevelGenerator>(Lifetime.Singleton).
                 WithParameter("platformsPrefabs", platformsPrefabs).
-                WithParameter("player", player).
-                WithParameter("spawnRoot", spawnRoot).
+                WithParameter("playerT", playerT).
+                WithParameter("spawnRootT", spawnRootT).
                 AsImplementedInterfaces();
 
             builder.RegisterEntryPoint<LoopController>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<InitializeController>(Lifetime.Singleton);
 
-            //builder.Register<SwipeController>(Lifetime.Singleton)
-                //AsImplementedInterfaces();
+            builder.Register<PlayerMovement>(Lifetime.Singleton).
+                WithParameter("playerT", playerT).
+                WithParameter("lineDistance", 2.0F).
+                WithParameter("jumpForce", 20.0F).
+                WithParameter("fallForce", 1.0F).
+                WithParameter("intialSpeed", 1.0F).
+                AsImplementedInterfaces();
+
+            builder.Register<KeyboardInput>(Lifetime.Singleton).
+                AsImplementedInterfaces();
         }
     }
 }

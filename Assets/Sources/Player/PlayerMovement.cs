@@ -1,135 +1,162 @@
-//using System.Collections.Generic;
-//using UnityEngine;
+using UnityEngine;
+using UnityEngine.UIElements;
+using VContainer;
+using VContainer.Unity;
 
-//namespace Alexender.Runer
-//{
-//    public class PlayerMovement : IUpdatable
-//    {
-//        private const float RAY_LENGTH_Y = 3.0F;
-//        private const float RAYCAST_RADIUS = 0.5F;
-//        private const float MAX_SPEED = 20.0F;
+namespace Alexander.RunnerCandy
+{
+    public class PlayerMovement : IUpdatable, IPrioritizedInitializable
+    {
+        private const float RAY_LENGTH_Y = 3.0F;
+        private const float RAYCAST_RADIUS = 0.5F;
+        private const float MAX_SPEED = 20.0F;
+        private const int MAX_LINES_COUNT = 3;
 
-//        private readonly float lineDistance;
-//        private readonly Transform playerT;
-//        private readonly float jumpForce;
-//        private readonly float fallForce;
-//        private readonly float acceleration;
+        // Dependencies
+        private readonly IInput input;
 
-//        // Собственные поля
-//        private int currentLine;
-//        private Vector3 movementVelocity;
-//        private float speed;
-//        private bool isSwipedDown;
+        // TODO: to config
+        // Params
+        private readonly Transform playerT;
+        private readonly float lineWidth;
+        private readonly float jumpForce;
+        private readonly float fallForce;
+        private readonly float acceleration;
 
-//        public LayerMask groundLayer;
+        // Собственные поля
+        private int currentLine;
+        private int targetLine;
+        private Vector3 movementVelocity;
+        private float speed;
+        private bool isSwipedDown;
 
-//        public Vector3 Velocity => movementVelocity;
+        public LayerMask groundLayer;
 
-//        public PlayerMovement(float lineDistance,
-//            Transform playerT,
-//            float jumpForce,
-//            float fallForce,
-//            float intialSpeed)
-//        {
-//            this.lineDistance = lineDistance;
-//            this.playerT = playerT;
-//            this.jumpForce = jumpForce;
-//            this.fallForce = fallForce;
+        public Vector3 Velocity => movementVelocity;
 
-//            speed = intialSpeed;
-//            acceleration = 1.0F;
-//            currentLine = 1;
-//        }
+        public int Priority => UpdatePriorityList.PLAYER_MOVEMENT;
 
-//        private bool IsGrounded(out Vector3 hitPoint)
-//        {
-//            groundLayer = LayerMask.GetMask("Ground");
-//            Vector3 rayOrigin = playerT.position + Vector3.up * RAY_LENGTH_Y;
-//            float rayLength = RAY_LENGTH_Y - RAYCAST_RADIUS;
+        [Inject]
+        public PlayerMovement(Transform playerT,
+            IInput input,
 
-//            Debug.DrawRay(rayOrigin, Vector3.down * rayLength, Color.red);
+            float lineDistance,
+            float jumpForce,
+            float fallForce,
+            float intialSpeed)
+        {
+            this.lineWidth = lineDistance;
+            this.playerT = playerT;
+            this.input = input;
+            this.jumpForce = jumpForce;
+            this.fallForce = fallForce;
 
-//            if (Physics.SphereCast(rayOrigin, RAYCAST_RADIUS, Vector3.down, out RaycastHit hit, rayLength, groundLayer))
-//            {
-//                hitPoint = hit.point;
-//                return true;
-//            }
+            speed = intialSpeed;
 
-//            hitPoint = default;
-//            return false;
-//        }
+            // TODO: make as parameters
+            acceleration = 1.0F;
+            currentLine = 1;
+        }
 
-//        public void DoUpdate()
-//        {
-//            speed += acceleration * Time.deltaTime;
-//            speed = Mathf.Min(speed, MAX_SPEED);
-//            movementVelocity.z = speed;
+        public void Initialize()
+        {
+            targetLine = currentLine;
+            float startX = GetLinePositionX(currentLine);
+            SetPlayerPositionX(startX);
+        }
 
-//            if (IsGrounded(out var hitPoint))
-//            {
-//                isSwipedDown = false;
+        private bool IsGrounded(out Vector3 hitPoint)
+        {
+            groundLayer = LayerMask.GetMask("Ground");
+            Vector3 rayOrigin = playerT.position + Vector3.up * RAY_LENGTH_Y;
+            float rayLength = RAY_LENGTH_Y - RAYCAST_RADIUS;
 
-//                playerT.position = new Vector3(playerT.position.x, hitPoint.y, playerT.position.z);
-//                movementVelocity.y = 0;
+            Debug.DrawRay(rayOrigin, Vector3.down * rayLength, Color.red);
 
-//                if (SwipeController.swipeUp)
-//                {
-//                    movementVelocity.y = jumpForce;
-//                }
-//            }
-//            else
-//            {
-//                movementVelocity.y += Time.deltaTime * Physics.gravity.y;
+            if (Physics.SphereCast(rayOrigin, RAYCAST_RADIUS, Vector3.down, out RaycastHit hit, rayLength, groundLayer))
+            {
+                hitPoint = hit.point;
+                return true;
+            }
 
-//                if (SwipeController.swipeDown)
-//                {
-//                    isSwipedDown = true;
-//                }
+            hitPoint = default;
+            return false;
+        }
 
-//                if (isSwipedDown)
-//                {
-//                    movementVelocity.y += fallForce * Physics.gravity.y * Time.deltaTime * 5f;
-//                }
-//            }
+        public void DoUpdate()
+        {
+            speed += acceleration * Time.deltaTime;
+            speed = Mathf.Min(speed, MAX_SPEED);
+            movementVelocity.z = speed;
 
+            if (IsGrounded(out var hitPoint))
+            {
+                isSwipedDown = false;
 
-//            HandleLaneChange();
+                playerT.position = new Vector3(playerT.position.x, hitPoint.y, playerT.position.z);
+                movementVelocity.y = 0;
 
-//            playerT.position += movementVelocity * Time.deltaTime;
-//        }
+                if (input.InputDirection == InputDirection.Up)
+                {
+                    movementVelocity.y = jumpForce;
+                }
+            }
+            else
+            {
+                movementVelocity.y += Time.deltaTime * Physics.gravity.y;
 
-//        private void HandleLaneChange()
-//        {
-//            int targetLine = currentLine;
+                if (input.InputDirection == InputDirection.Down)
+                {
+                    isSwipedDown = true;
+                }
 
-//            if (SwipeController.swipeRight && currentLine < 2)
-//            {
-//                targetLine++;
-//            }
-//            else if (SwipeController.swipeLeft && currentLine > 0)
-//            {
-//                targetLine--;
-//            }
+                if (isSwipedDown)
+                {
+                    movementVelocity.y += fallForce * Physics.gravity.y * Time.deltaTime * 5f;
+                }
+            }
 
-//            if (targetLine != currentLine)
-//            {
-//                currentLine = targetLine;
-//                Vector3 targetPosition = GetLinePosition(targetLine);
-//                MoveToLine(targetPosition);
-//            }
-//        }
+            SelectTargetLine();
+            MoveToTargetLine();
 
-//        private Vector3 GetLinePosition(int lineIndex)
-//        {
-//            float offsetX = (lineIndex - 1) * lineDistance;
-//            return new Vector3(offsetX, playerT.position.y, playerT.position.z);
-//        }
+            playerT.position += movementVelocity * Time.deltaTime;
+        }
 
-//        private void MoveToLine(Vector3 targetPosition)
-//        {
-//            float moveSpeed = 10.0f;
-//            Vector3 newPosition = Vector3.Lerp(playerT.position, targetPosition, moveSpeed * Time.deltaTime);
-//            playerT.position = newPosition;
-//        }
-//    }
-//}
+        private void SelectTargetLine()
+        {
+            int deltaLine = 0;
+            switch (input.InputDirection)
+            {
+                case InputDirection.Left: deltaLine--; break;
+                case InputDirection.Right: deltaLine++; break;
+            }
+
+            targetLine += deltaLine;
+            targetLine = Mathf.Clamp(targetLine, 0, MAX_LINES_COUNT - 1);
+        }
+
+        private float GetLinePositionX(int lineIndex)
+        {
+            float targetX = lineIndex * lineWidth + lineWidth / 2.0F;
+            return targetX;
+        }
+
+        private void MoveToTargetLine()
+        {
+            float targetX = GetLinePositionX(targetLine);
+
+            // TODO: make as parameter
+            float moveSpeedX = 10.0f;
+
+            float xPosition = Mathf.MoveTowards(playerT.position.x, targetX, moveSpeedX * Time.deltaTime);
+            SetPlayerPositionX(xPosition);
+        }
+
+        private void SetPlayerPositionX(float x)
+        {
+            var playerPosition = playerT.position;
+            playerPosition.x = x;
+            playerT.position = playerPosition;
+        }
+    }
+}

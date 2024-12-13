@@ -8,8 +8,8 @@ namespace Alexander.RunnerCandy
     public class LevelGenerator : IInitializable, IUpdatable
     {
         private readonly GameObject[] platformsPrefabs;
-        private readonly Transform player;
-        private readonly Transform spawnRoot;
+        private readonly Transform playerT;
+        private readonly Transform spawnRootT;
 
         private const float LEVEL_PART_LENGTH = 24.0F;
         private const float DISTNACE_OFFSET = LEVEL_PART_LENGTH * 6;
@@ -20,12 +20,12 @@ namespace Alexander.RunnerCandy
 
         [Inject]
         public LevelGenerator(GameObject[] platformsPrefabs,
-            Transform player,
-            Transform spawnRoot)
+            Transform playerT,
+            Transform spawnRootT)
         {
             this.platformsPrefabs = platformsPrefabs;
-            this.player = player;
-            this.spawnRoot = spawnRoot;
+            this.playerT = playerT;
+            this.spawnRootT = spawnRootT;
 
             activeLevelParts = new List<GameObject>();
         }
@@ -39,7 +39,7 @@ namespace Alexander.RunnerCandy
         {
             float length = CalcCurrentSpawnedLength();
 
-            while (player.position.z + DISTNACE_OFFSET >= length)
+            while (playerT.position.z + DISTNACE_OFFSET >= length)
             {
                 int randomPlatformIndex = Random.Range(0, platformsPrefabs.Length);
                 SpawnLevelPart(randomPlatformIndex, length);
@@ -61,7 +61,7 @@ namespace Alexander.RunnerCandy
             GameObject nextLevelPart = Object.Instantiate(prefab,
                 spawnPosition,
                 Quaternion.identity,
-                spawnRoot);
+                spawnRootT);
 
             activeLevelParts.Add(nextLevelPart);
         }
