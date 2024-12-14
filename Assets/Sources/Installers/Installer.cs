@@ -25,9 +25,12 @@ namespace Alexander.RunnerCandy
             builder.Register<PlayerMovement>(Lifetime.Singleton).
                 WithParameter("playerT", playerT).
                 WithParameter("lineDistance", 2.0F).
-                WithParameter("jumpForce", 20.0F).
+                WithParameter("jumpForce", 10.0F).
                 WithParameter("fallForce", 1.0F).
                 WithParameter("intialSpeed", 1.0F).
+                AsImplementedInterfaces();
+
+            builder.Register<SwipeInput>(Lifetime.Singleton).
                 AsImplementedInterfaces();
 
             builder.Register<KeyboardInput>(Lifetime.Singleton).

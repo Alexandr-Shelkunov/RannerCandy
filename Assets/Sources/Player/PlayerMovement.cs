@@ -54,7 +54,7 @@ namespace Alexander.RunnerCandy
             speed = intialSpeed;
 
             // TODO: make as parameters
-            acceleration = 1.0F;
+            acceleration = 0.5F;
             currentLine = 1;
         }
 

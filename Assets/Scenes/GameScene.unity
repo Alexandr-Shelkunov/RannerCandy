@@ -594,6 +594,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   platformsPrefabs:
   - {fileID: 8386924012122958701, guid: c8a1efd9c4caaad47a0dbd89ac5cb5b6, type: 3}
+  - {fileID: 4908641806841673114, guid: 76451f9013689f544aff07d11d845eac, type: 3}
   playerT: {fileID: 131358859}
   spawnRootT: {fileID: 885212823}
 --- !u!1 &2137284162
