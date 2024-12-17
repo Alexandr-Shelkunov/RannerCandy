@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5532632718469013762}
   - component: {fileID: 450313696252945302}
   - component: {fileID: -1384495039460891269}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HighElevetionDesert
   m_TagString: Untagged
   m_Icon: {fileID: 0}

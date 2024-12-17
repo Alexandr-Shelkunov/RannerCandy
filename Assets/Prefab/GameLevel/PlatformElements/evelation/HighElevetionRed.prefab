@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4499347642877030120}
   - component: {fileID: 2362194527885472670}
   - component: {fileID: -5006526849754130741}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HighElevetionRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

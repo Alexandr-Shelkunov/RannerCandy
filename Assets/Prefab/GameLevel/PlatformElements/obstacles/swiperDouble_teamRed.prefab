@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1821245694171330032}
   - component: {fileID: 8105303900389449171}
   - component: {fileID: 597449127437259036}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: swiperDouble_teamRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

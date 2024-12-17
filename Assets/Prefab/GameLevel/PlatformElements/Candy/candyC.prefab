@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 318574031284073588}
   - component: {fileID: 979320714094109515}
   - component: {fileID: 9114602642963991186}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: candyC
   m_TagString: Untagged
   m_Icon: {fileID: 0}

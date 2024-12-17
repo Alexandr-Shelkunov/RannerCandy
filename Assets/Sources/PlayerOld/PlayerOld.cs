@@ -1,3 +1,4 @@
+
 //using System;
 //using System.Collections;
 //using System.Collections.Generic;
@@ -7,39 +8,11 @@
 //{
 //    public class Player : MonoBehaviour, IUpdatable
 //    {
-//        // Зависимости
-//        [SerializeField] private LoopController loopController;
-//        [SerializeField] private Transform sceneRoot;
-
-//        // Параметры движения
-//        [SerializeField] private float jumpForce;
-//        [SerializeField] private float fallForce;
-//        [SerializeField] private float gravity;
-//        [SerializeField] private float lineDistance;
-//        [SerializeField] private float speed;
 
 //        public event Action CollidedWithObstacle;
 
 //        public PlayerModel Model { get; private set; }
 
-//        // Новый экземпляр класса движения
-//        private PlayerMovement playerMovement;
-
-//        private void Awake()
-//        {
-//            // Инициализация модели и движения
-//            Model = new PlayerModel();
-//            playerMovement = new PlayerMovement(lineDistance, transform, jumpForce, fallForce, speed);
-//        }
-
-//        private void Start()
-//        {
-//            // Регистрируем Player в LoopController
-//            if (loopController != null)
-//            {
-//                loopController.Register(this);
-//            }
-//        }
 
 //        // Обновление объекта (вызов в LoopController)
 //        public void DoUpdate()

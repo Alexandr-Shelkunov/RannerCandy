@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7677874025681498283}
   - component: {fileID: 6569212986579145416}
   - component: {fileID: -1388791564405143966}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HighEveletionForest
   m_TagString: Untagged
   m_Icon: {fileID: 0}

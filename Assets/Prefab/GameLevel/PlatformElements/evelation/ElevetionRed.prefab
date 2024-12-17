@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7506440969290420062}
   - component: {fileID: 4213107602195885955}
   - component: {fileID: 4910493738804471724}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tileSlopeLowMedium._teamRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 4240435598396771492}
   - component: {fileID: 4106433588260024815}
   - component: {fileID: 846307022765484927}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,13 +112,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6409207922969028108}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0973255, y: 0.70037687, z: 0.0973255, w: 0.70037687}
-  m_LocalPosition: {x: -0.028048515, y: 1.566647, z: 0}
+  m_LocalRotation: {x: -0.08862578, y: 0.7015309, z: 0.08862578, w: 0.7015309}
+  m_LocalPosition: {x: -0.026218098, y: 1.5859938, z: 0.0000000018626451}
   m_LocalScale: {x: 1, y: 0.9641609, z: 0.6836068}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7506440969290420062}
-  m_LocalEulerAnglesHint: {x: -15.823, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -14.4, y: 90, z: 0}
 --- !u!33 &4240435598396771492
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 7672614818792289762}
   - component: {fileID: 5290582424235385793}
   - component: {fileID: 2119404879479355880}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevetionRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

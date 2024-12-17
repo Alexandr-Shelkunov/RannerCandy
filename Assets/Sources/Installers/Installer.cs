@@ -21,6 +21,11 @@ namespace Alexander.RunnerCandy
 
             builder.RegisterEntryPoint<LoopController>(Lifetime.Singleton);
             builder.RegisterEntryPoint<InitializeController>(Lifetime.Singleton);
+            builder.Register<PlayerModel>(Lifetime.Singleton);
+
+            builder.Register<Player>(Lifetime.Singleton)
+                .WithParameter("playerT", playerT)
+                .AsSelf();
 
             builder.Register<PlayerMovement>(Lifetime.Singleton).
                 WithParameter("playerT", playerT).

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2063449254788894323}
   - component: {fileID: 4040678813752815680}
   - component: {fileID: 4905312341612402771}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tileHigh_desert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 2830197474188340276}
   - component: {fileID: 9125268979961238568}
   - component: {fileID: -8513094395906549479}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevetionDesert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 3599757253355590693}
   - component: {fileID: 8796336123706469401}
   - component: {fileID: 7806583862967118714}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2936913296042056883}
   - component: {fileID: 3180043451656114211}
   - component: {fileID: 767714019045798646}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lollipop
   m_TagString: Untagged
   m_Icon: {fileID: 0}

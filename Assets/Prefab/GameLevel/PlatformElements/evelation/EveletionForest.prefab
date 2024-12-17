@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 981398661662175697}
   - component: {fileID: 8133395670963853386}
   - component: {fileID: 5900054335739507644}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tileSlopeLowMedium_forest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7387830454829999508}
   - component: {fileID: 9193084613547434657}
   - component: {fileID: 7784874389235990226}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 353045341650310611}
   - component: {fileID: 3363191585999148944}
   - component: {fileID: 430574920032545338}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EveletionForest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
