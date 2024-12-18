@@ -5,10 +5,11 @@ namespace Alexander.RunnerCandy
 {
     public class Player : MonoBehaviour, IUpdatable
     {
+        private readonly Transform playerTransform;
+
         public event Action CollidedWithObstacle;
 
         public PlayerModel Model { get; private set; }
-        private Transform playerTransform;
 
         private PlayerMovement playerMovement;
 

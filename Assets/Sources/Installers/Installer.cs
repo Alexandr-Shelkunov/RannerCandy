@@ -1,4 +1,3 @@
-using Alexander.RunnerCandy;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -36,10 +35,11 @@ namespace Alexander.RunnerCandy
                 AsImplementedInterfaces();
 
             builder.Register<SwipeInput>(Lifetime.Singleton).
+                WithParameter("swipeRegisterOffset", 60).
                 AsImplementedInterfaces();
 
-            builder.Register<KeyboardInput>(Lifetime.Singleton).
-                AsImplementedInterfaces();
+            //builder.Register<KeyboardInput>(Lifetime.Singleton).
+            //    AsImplementedInterfaces();
         }
     }
 }

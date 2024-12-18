@@ -1,4 +1,4 @@
-namespace Alexender.Runer
+namespace Alexander.RunnerCandy
 {
     public class PlayerModel
     {

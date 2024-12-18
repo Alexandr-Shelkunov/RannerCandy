@@ -14,7 +14,7 @@ namespace Alexander.RunnerCandy
         private const float LEVEL_PART_LENGTH = 24.0F;
         private const float DISTNACE_OFFSET = LEVEL_PART_LENGTH * 6;
 
-        private List<GameObject> activeLevelParts;
+        private readonly List<GameObject> activeLevelParts;
 
         public int Priority => UpdatePriorityList.LEVEL_GENERATOR;
 
