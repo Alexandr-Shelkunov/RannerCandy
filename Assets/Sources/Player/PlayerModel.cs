@@ -1,3 +1,5 @@
+using VContainer;
+
 namespace Alexander.RunnerCandy
 {
     public class PlayerModel
@@ -6,6 +8,7 @@ namespace Alexander.RunnerCandy
         public int CandyCount { get; set; }
         public float Weight { get; set; }
 
+        [Inject]
         public PlayerModel()
         {
             ResetStats();

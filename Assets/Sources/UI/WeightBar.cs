@@ -19,6 +19,9 @@ namespace Alexander.RunnerCandy
 
         public float CurrentWeight => currentWeight;
 
+        // TODO: Replace priority
+        public int Priority => 0;
+
         public WeightBar(UnityEngine.UI.Slider slider)
         {
             currentWeight = InitialWeight;  
