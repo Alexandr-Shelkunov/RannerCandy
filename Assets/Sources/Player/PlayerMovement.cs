@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VContainer;
@@ -14,6 +15,7 @@ namespace Alexander.RunnerCandy
 
         // Dependencies
         private readonly IInput input;
+        private readonly Action openLosePanel;
 
         // TODO: to config
         // Params
@@ -31,6 +33,8 @@ namespace Alexander.RunnerCandy
         private bool isSwipedDown;
 
         public LayerMask groundLayer;
+        public LayerMask obstacleLayer;
+        public GameObject LosePanel;
 
         public Vector3 Velocity => movementVelocity;
 
@@ -39,17 +43,19 @@ namespace Alexander.RunnerCandy
         [Inject]
         public PlayerMovement(Transform playerT,
             IInput input,
-
+            Action openLosePanel,
             float lineDistance,
             float jumpForce,
             float fallForce,
-            float intialSpeed)
+            float intialSpeed,
+            GameObject losePanel)
         {
             this.lineWidth = lineDistance;
             this.playerT = playerT;
             this.input = input;
             this.jumpForce = jumpForce;
             this.fallForce = fallForce;
+            this.LosePanel = losePanel;
 
             speed = intialSpeed;
 
@@ -75,12 +81,42 @@ namespace Alexander.RunnerCandy
 
             if (Physics.SphereCast(rayOrigin, RAYCAST_RADIUS, Vector3.down, out RaycastHit hit, rayLength, groundLayer))
             {
-                hitPoint = hit.point;
-                return true;
+                float lowerBoundY = playerT.position.y; 
+                float maxYThreshold = lowerBoundY + 0.1f; 
+
+                if (hit.point.y >= lowerBoundY && hit.point.y <= maxYThreshold)
+                {
+                    hitPoint = hit.point;
+                    return true; 
+                }
             }
 
             hitPoint = default;
             return false;
+        }
+
+        public void OpenLosePanel()
+        {
+            LosePanel.SetActive(true);
+        }
+
+        private void CheckCollisions()
+        {
+            Vector3 forward = playerT.forward;
+            RaycastHit hit;
+
+            if (Physics.Raycast(playerT.position, forward, out hit, RAY_LENGTH_Y, obstacleLayer))
+            {
+                if (hit.collider.CompareTag("Obstacle"))
+                {
+                    openLosePanel?.Invoke();
+                }
+            }
+        }
+
+        public void StopMovement()
+        {
+            movementVelocity = Vector3.zero; 
         }
 
         public void DoUpdate()
@@ -118,6 +154,7 @@ namespace Alexander.RunnerCandy
 
             SelectTargetLine();
             MoveToTargetLine();
+            CheckCollisions();
 
             playerT.position += movementVelocity * Time.deltaTime;
         }

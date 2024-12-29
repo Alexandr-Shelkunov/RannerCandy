@@ -1,4 +1,3 @@
-using Alexander.RunnerCandy;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -10,6 +9,8 @@ namespace Alexander.RunnerCandy
         [SerializeField] private GameObject[] platformsPrefabs;
         [SerializeField] private Transform playerT;
         [SerializeField] private Transform spawnRootT;
+        [SerializeField] private GameObject losePanel;
+        [SerializeField] private Slider weightSlider;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -19,13 +20,11 @@ namespace Alexander.RunnerCandy
                 WithParameter("spawnRootT", spawnRootT).
                 AsImplementedInterfaces();
 
-            builder.RegisterEntryPoint<LoopController>(Lifetime.Singleton);
             builder.RegisterEntryPoint<InitializeController>(Lifetime.Singleton);
             builder.Register<PlayerModel>(Lifetime.Singleton);
 
-            builder.Register<Player>(Lifetime.Singleton)
-                .WithParameter("playerT", playerT)
-                .AsSelf();
+            builder.Register<WeightBar>(Lifetime.Singleton);
+                WithParameter("slider", weightSlider);
 
             builder.Register<PlayerMovement>(Lifetime.Singleton).
                 WithParameter("playerT", playerT).
@@ -33,13 +32,32 @@ namespace Alexander.RunnerCandy
                 WithParameter("jumpForce", 10.0F).
                 WithParameter("fallForce", 1.0F).
                 WithParameter("intialSpeed", 1.0F).
+                WithParameter("losePanel", losePanel)
                 AsImplementedInterfaces();
 
-            builder.Register<SwipeInput>(Lifetime.Singleton).
-                AsImplementedInterfaces();
+            builder.Register<Player>(Lifetime.Singleton)
+                WithParameter("playerT", playerT)
+                WithParameter("model", Container.Resolve<PlayerModel>()) 
+                WithParameter("playerMovement", Container.Resolve<PlayerMovement>())
+                WithParameter("weight", Container.Resolve<WeightBar>())
+                AsSelf();
+
+            //builder.Register<SwipeInput>(Lifetime.Singleton).
+            //WithParameter("swipeRegisterOffset", 60).
+            //AsImplementedInterfaces();
 
             builder.Register<KeyboardInput>(Lifetime.Singleton).
                 AsImplementedInterfaces();
+        }
+
+        protected override void Awake()
+        {
+            var playerModel = Container.Resolve<PlayerModel>();
+            var playerMovement = Container.Resolve<PlayerMovement>();
+            var weightBar = Container.Resolve<WeightBar>();
+
+            var player = Container.Resolve<Player>();
+            player.Initialize(playerModel, playerMovement, weightBar);
         }
     }
 }

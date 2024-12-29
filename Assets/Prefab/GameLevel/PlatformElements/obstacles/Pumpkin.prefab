@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6510421092269690324}
   - component: {fileID: 1058376128019279973}
   m_Layer: 7
-  m_Name: pumpkin
-  m_TagString: Untagged
+  m_Name: Pumpkin
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -5,20 +5,38 @@ namespace Alexander.RunnerCandy
 {
     public class Player : MonoBehaviour, IUpdatable
     {
+        private readonly Transform playerTransform;
+
         public event Action CollidedWithObstacle;
 
         public PlayerModel Model { get; private set; }
-        private Transform playerTransform;
 
         private PlayerMovement playerMovement;
 
+        private WeightBar weightBar;
+
         public int Priority => UpdatePriorityList.PLAYER;
 
-        public Player(Transform playerT, PlayerModel model)
+        public LayerMask candyLayer;
+        public LayerMask obstacleLayer;
+
+        public GameObject LosePanel;
+
+
+        public Player(Transform playerT)
         {
             playerTransform = playerT;
-            Model = model;
         }
+
+        public void Initialize(PlayerModel model, PlayerMovement movement)
+        {
+            Model = model ?? throw new ArgumentNullException(nameof(model));
+            playerMovement = movement ?? throw new ArgumentNullException(nameof(movement));
+            weightBar = weight ?? throw new ArgumentNullException(nameof(weight));
+
+            weightBar.GameOver += OnGameOver;
+        }
+
 
         private void Start()
         {
@@ -28,14 +46,15 @@ namespace Alexander.RunnerCandy
         public void DoUpdate()
         {
             playerMovement.DoUpdate();
+            weightBar.DoUpdate();
             CheckCandyPickup();
             CheckObstacleCollision();
         }
 
         private void CheckCandyPickup()
         {
-            float pickupRadius = 1.0f;
-            Collider[] hitColliders = Physics.OverlapSphere(playerTransform.position, pickupRadius);
+            float pickupRadius = 2.0f;
+            Collider[] hitColliders = Physics.OverlapSphere(playerTransform.position, pickupRadius, candyLayer);
 
             foreach (var collider in hitColliders)
             {
@@ -43,7 +62,7 @@ namespace Alexander.RunnerCandy
                 {
                     Model.CandyCount++;
                     Destroy(collider.gameObject);
-                    Model.Weight += 3;
+                    weightBar.AddWeightForCandy();
                 }
             }
         }
@@ -55,13 +74,21 @@ namespace Alexander.RunnerCandy
 
             Debug.DrawRay(rayOrigin, Vector3.forward * rayDistance, Color.red);
 
-            if (Physics.Raycast(rayOrigin, Vector3.forward, out RaycastHit hit, rayDistance))
+            if (Physics.Raycast(rayOrigin, Vector3.forward, out RaycastHit hit, rayDistance, obstacleLayer))
             {
-                if (hit.collider.CompareTag("obstacle"))
+                if (hit.collider.CompareTag("Obstacle"))
                 {
                     CollidedWithObstacle?.Invoke();
+                    playerMovement.StopMovement();
                     Time.timeScale = 0;
                 }
+            }
+
+            private void OnGameOver()
+            {
+                Debug.Log("Game Over!");
+                LosePanel.SetActive(true);
+                Time.timeScale = 0; 
             }
         }
     }

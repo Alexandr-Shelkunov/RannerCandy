@@ -6,12 +6,12 @@ namespace Alexander.RunnerCandy
 {
     public enum InputDirection
     {
+        None,
+
         Right,
         Left,
         Down,
         Up,
-
-        None
     }
 
     public interface IInput

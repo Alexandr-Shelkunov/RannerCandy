@@ -1,74 +1,102 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Alexander.RunnerCandy
 {
-    public class SwipeInput : IInput, IUpdatable
+    public class SwipeInput : IInput, IUpdatable, IInitializable
     {
-        public InputDirection InputDirection { get; private set; }
+        // Parameters/dependencies
+        private readonly float swipeRegisterOffset;
 
+        // Own fields
+        private Vector2 startTouchPosition;
+        private Vector2 currentTouchPosition;
+        private bool isSwipeInProgress;
+
+        // Public fields
+        public InputDirection InputDirection { get; private set; }
         public int Priority => UpdatePriorityList.INPUT;
 
-        private Vector2 _startTouchPosition;
-        private Vector2 _endTouchPosition;
-        private bool _isSwipe;
+        public SwipeInput(float swipeRegisterOffset)
+        {
+            this.swipeRegisterOffset = swipeRegisterOffset;
+        }
+
+        public void Initialize()
+        {
+            InputDirection = InputDirection.None;
+        }
 
         public void DoUpdate()
         {
-            InputDirection = InputDirection.None;
-
-            if (Input.touchCount > 0)
+            if (Input.touchCount == 0)
             {
-                Touch touch = Input.GetTouch(0);
+                return;
+            }
 
-                switch (touch.phase)
+            InputDirection = InputDirection.None;
+            Touch touch = Input.GetTouch(0);
+
+            switch (touch.phase)
+            {
+                case TouchPhase.Began: HandleTouchStart(touch); break;
+                case TouchPhase.Moved: HandleTouchChange(touch); return;
+                case TouchPhase.Ended: HandleTouchEnd(); break;
+            }
+        }
+
+        private void HandleTouchEnd()
+        {
+            isSwipeInProgress = false;
+        }
+
+        private void HandleTouchStart(Touch touch)
+        {
+            startTouchPosition = touch.position;
+            isSwipeInProgress = true;
+        }
+
+        private void HandleTouchChange(Touch touch)
+        {
+            if (!isSwipeInProgress)
+            {
+                return;
+            }
+
+            currentTouchPosition = touch.position;
+            Vector2 delta = currentTouchPosition - startTouchPosition;
+
+            bool isHorizontal = Mathf.Abs(delta.x) > Mathf.Abs(delta.y);
+            if (isHorizontal)
+            {
+                if (delta.x > swipeRegisterOffset)
                 {
-                    case TouchPhase.Began:
-                        _startTouchPosition = touch.position;
-                        _isSwipe = true;
-                        break;
-
-                    case TouchPhase.Moved:
-                        if (_isSwipe)
-                        {
-                            _endTouchPosition = touch.position;
-                            Vector2 delta = _endTouchPosition - _startTouchPosition;
-
-                            if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
-                            {
-                                if (delta.x > 50) 
-                                {
-                                    InputDirection = InputDirection.Right;
-                                    _isSwipe = false;
-                                }
-                                else if (delta.x < -50) 
-                                {
-                                    InputDirection = InputDirection.Left;
-                                    _isSwipe = false;
-                                }
-                            }
-                            else
-                            {
-                                if (delta.y > 50) 
-                                {
-                                    InputDirection = InputDirection.Up;
-                                    _isSwipe = false;
-                                }
-                                else if (delta.y < -50)
-                                {
-                                    InputDirection = InputDirection.Down;
-                                    _isSwipe = false;
-                                }
-                            }
-                        }
-                        break;
-
-                    case TouchPhase.Ended:
-                        _isSwipe = false;
-                        break;
+                    SetSwipeDirection(InputDirection.Right);
+                }
+                else if (delta.x < -swipeRegisterOffset)
+                {
+                    SetSwipeDirection(InputDirection.Left);
                 }
             }
+            else
+            {
+                if (delta.y > swipeRegisterOffset)
+                {
+                    SetSwipeDirection(InputDirection.Up);
+                }
+                else if (delta.y < -swipeRegisterOffset)
+                {
+                    SetSwipeDirection(InputDirection.Down);
+                }
+            }
+        }
+
+        private void SetSwipeDirection(InputDirection direction)
+        {
+            InputDirection = direction;
+            isSwipeInProgress = false;
         }
     }
 }
