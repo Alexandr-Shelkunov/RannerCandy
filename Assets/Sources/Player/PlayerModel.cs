@@ -6,7 +6,6 @@ namespace Alexander.RunnerCandy
     {
         public float DistanceScore { get; set; }
         public int CandyCount { get; set; }
-        public float Weight { get; set; }
 
         [Inject]
         public PlayerModel()
@@ -18,7 +17,6 @@ namespace Alexander.RunnerCandy
         {
             DistanceScore = 0f;
             CandyCount = 0;
-            Weight = 40f;
         }
     }
 }

@@ -27,16 +27,21 @@ namespace Alexander.RunnerCandy
 
             builder.Register<PlayerModel>(Lifetime.Singleton);
 
+            builder.Register<CandyPickupChecker>(Lifetime.Singleton).
+               WithParameter("playerTransform", playerTransform).
+               AsImplementedInterfaces();
+
+            builder.Register<ObstacleCollisionChecker>(Lifetime.Singleton).
+                WithParameter("playerTransform", playerTransform).
+                AsImplementedInterfaces();
+
             builder.Register<PlayerMovement>(Lifetime.Singleton).
                 WithParameter("playerT", playerTransform).
                 WithParameter("lineDistance", 2.0F).
                 WithParameter("jumpForce", 10.0F).
                 WithParameter("fallForce", 1.0F).
                 WithParameter("intialSpeed", 1.0F).
-                AsImplementedInterfaces();
-
-            builder.Register<Player>(Lifetime.Singleton).
-                WithParameter("playerTransform", playerTransform).
+                WithParameter("verticalHeightThreshold", 0.01F).
                 AsImplementedInterfaces();
 
             builder.Register<KeyboardInput>(Lifetime.Singleton).

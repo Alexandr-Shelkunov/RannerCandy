@@ -14,6 +14,7 @@ namespace Alexander.RunnerCandy
         private const int MAX_LINES_COUNT = 3;
         private const float REGISTER_HEIGHT_TIME_SPAN = 0.02F;
 
+
         // Dependencies
         private readonly IInput input;
         private readonly Action openLosePanel;
@@ -24,6 +25,7 @@ namespace Alexander.RunnerCandy
         private readonly float lineWidth;
         private readonly float jumpForce;
         private readonly float fallForce;
+        private readonly float verticalHeightThreshold;
 
         // Собственные поля
         private int targetLine;
@@ -48,13 +50,15 @@ namespace Alexander.RunnerCandy
             float lineDistance,
             float jumpForce,
             float fallForce,
-            float intialSpeed)
+            float intialSpeed,
+            float verticalHeightThreshold)
         {
             this.lineWidth = lineDistance;
             this.playerT = playerT;
             this.input = input;
             this.jumpForce = jumpForce;
             this.fallForce = fallForce;
+            this.verticalHeightThreshold = verticalHeightThreshold;
 
             speed = intialSpeed;
 
@@ -89,24 +93,24 @@ namespace Alexander.RunnerCandy
             return false;
         }
 
-        private void CheckCollisions()
+        private bool CheckForVerticalObstacle(Vector3 moveDirection, out Vector3 hitPoint)
         {
-            Vector3 forward = playerT.forward;
+            Vector3 rayOrigin = playerT.position + Vector3.up * RAY_LENGTH_Y;
+            float rayLength = RAY_LENGTH_Y - RAYCAST_RADIUS;
 
-            if (Physics.Raycast(playerT.position, forward, out var hit, RAY_LENGTH_Y, obstacleLayer))
+            if (Physics.Raycast(rayOrigin, moveDirection, out RaycastHit hit, rayLength, groundLayer))
             {
-                if (hit.collider.CompareTag("Obstacle"))
+                hitPoint = hit.point;
+
+                if (Mathf.Abs(hitPoint.y - playerT.position.y) > verticalHeightThreshold) 
                 {
-                    openLosePanel?.Invoke();
+                    return true; 
                 }
             }
-        }
 
-        //public void StopMovement()
-        //{
-        //    movementVelocity = Vector3.zero;
-        //    acceleration = 0.0F;
-        //}
+            hitPoint = default;
+            return false;
+        }
 
         public void DoUpdate()
         {
@@ -135,6 +139,16 @@ namespace Alexander.RunnerCandy
                 playerT.position = new Vector3(playerT.position.x, hitPoint.y, playerT.position.z);
                 movementVelocity.y = 0;
 
+                if (input.InputDirection == InputDirection.Left || input.InputDirection == InputDirection.Right)
+                {
+                    Vector3 moveDirection = (input.InputDirection == InputDirection.Left) ? Vector3.left : Vector3.right;
+                    if (CheckForVerticalObstacle(moveDirection, out var obstacleHitPoint))
+                    {
+                        Debug.Log("Vertical obstacle detected! Stopping movement.");
+                        return; 
+                    }
+                }
+
                 if (input.InputDirection == InputDirection.Up)
                 {
                     movementVelocity.y = jumpForce;
@@ -157,7 +171,6 @@ namespace Alexander.RunnerCandy
 
             SelectTargetLine();
             MoveToTargetLine();
-            CheckCollisions();
 
             playerT.position += movementVelocity * Time.deltaTime;
         }
