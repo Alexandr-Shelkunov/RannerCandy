@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5512828575305619785}
   - component: {fileID: 7932747703377963399}
   - component: {fileID: 8710441591541683902}
+  - component: {fileID: -7914758623057678002}
   m_Layer: 7
   m_Name: tree_desert
   m_TagString: Obstacle
@@ -83,3 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &-7914758623057678002
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8386288385821329371}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0381835, y: 2.8018777, z: 0.5512357}
+  m_Center: {x: -0.0011117458, y: 1.4009389, z: 0}

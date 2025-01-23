@@ -17,7 +17,6 @@ namespace Alexander.RunnerCandy
 
         // Dependencies
         private readonly IInput input;
-        private readonly Action openLosePanel;
 
         // TODO: to config
         // Params
@@ -38,7 +37,6 @@ namespace Alexander.RunnerCandy
 
         public LayerMask groundLayer;
         public LayerMask obstacleLayer;
-        public GameObject LosePanel;
 
         public Vector3 Velocity => movementVelocity;
 

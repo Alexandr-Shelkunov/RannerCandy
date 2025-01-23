@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Alexender.Runer.UI
 {
-    public class Mute
+    public class Mute : MonoBehaviour
     {
         private bool isMuted = false;
 

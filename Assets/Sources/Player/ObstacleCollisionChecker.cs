@@ -7,13 +7,19 @@ namespace Alexander.RunnerCandy
     public class ObstacleCollisionChecker : IUpdatable
     {
         private readonly Transform playerTransform;
+        private readonly GameObject losePanel;
+        private readonly GameObject playPanel;
+
         public LayerMask obstacleLayer;
         public event Action CollidedWithObstacle;
         public int Priority => UpdatePriorityList.OBSTACLE_COLLISION_CHECKER;
 
-        public ObstacleCollisionChecker(Transform playerTransform)
+
+        public ObstacleCollisionChecker(Transform playerTransform, GameObject losePanel, GameObject playPanel)
         {
             this.playerTransform = playerTransform;
+            this.losePanel = losePanel;
+            this.playPanel = playPanel;
         }
 
         public void DoUpdate()
@@ -35,6 +41,8 @@ namespace Alexander.RunnerCandy
                 {
                     CollidedWithObstacle?.Invoke();
                     Time.timeScale = 0;
+                    losePanel.SetActive(true);
+                    playPanel.SetActive(false);
                 }
             }
         }

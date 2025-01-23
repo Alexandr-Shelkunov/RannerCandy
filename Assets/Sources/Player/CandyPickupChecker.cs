@@ -8,6 +8,8 @@ namespace Alexander.RunnerCandy
     {
         private readonly Transform playerTransform;
         private readonly PlayerModel playerModel;
+        private readonly WeightBar weightBar;
+
         public LayerMask candyLayer;
         public int Priority => UpdatePriorityList.CANDY_PICKUP_CHECKER;
 

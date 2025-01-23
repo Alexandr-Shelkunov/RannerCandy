@@ -8,8 +8,16 @@ namespace Alexander.RunnerCandy
     public class Installer : LifetimeScope
     {
         [SerializeField] private GameObject[] platformsPrefabs;
+        [SerializeField] private GameObject losePanel; 
+        [SerializeField] private GameObject playPanel;
+
         [SerializeField] private Transform playerTransform;
         [SerializeField] private Transform spawnRootT;
+
+        [SerializeField] private Slider weightSlider;
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip candyPickupSound;
+
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -25,14 +33,30 @@ namespace Alexander.RunnerCandy
             builder.Register<LoopController>(Lifetime.Singleton).
                 AsImplementedInterfaces();
 
+            builder.Register<WeightBar>(Lifetime.Singleton).
+            WithParameter("weightSlider", weightSlider).
+            WithParameter("losePanel", losePanel).
+            WithParameter("playerTransform", playerTransform).
+            AsImplementedInterfaces();
+
+            builder.RegisterComponentInHierarchy<WeightBarManager>();
+
             builder.Register<PlayerModel>(Lifetime.Singleton);
 
             builder.Register<CandyPickupChecker>(Lifetime.Singleton).
                WithParameter("playerTransform", playerTransform).
                AsImplementedInterfaces();
 
+            builder.Register<CandyPickupAudioPlayer>(Lifetime.Singleton).
+               WithParameter("audioSource", audioSource).
+               WithParameter("candyPickupSound", candyPickupSound).
+               WithParameter("playerTransform", playerTransform).
+               AsImplementedInterfaces();
+
             builder.Register<ObstacleCollisionChecker>(Lifetime.Singleton).
                 WithParameter("playerTransform", playerTransform).
+                WithParameter("losePanel", losePanel).
+                WithParameter("playPanel", playPanel).
                 AsImplementedInterfaces();
 
             builder.Register<PlayerMovement>(Lifetime.Singleton).
